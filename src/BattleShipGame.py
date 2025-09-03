@@ -9,10 +9,6 @@ class BoardGame:
     def print_board(self):
         """
         Prints the game board to the console.
-        
-        Args:
-            show_ships (bool): If True, prints the ships_board. If False,
-                               prints the guesses_board.
         """
         board_to_print = self.ships_board
         print("  " + " ".join("ABCDEFGHIJ"))
@@ -20,6 +16,9 @@ class BoardGame:
             print(f"{i+1:<2}" + " ".join(row))
             
     def place_ships_randomly(self):
+        """
+        random place ship in board
+        """
         for _ in range(self.ships_number):
             row = random.randint(0, 9)
             col = random.randint(0, 9)
@@ -47,12 +46,13 @@ class BoardGame:
         else:
             self.ships_board[row-1][col-1] = 'X'
             return False
-    def all_ships_sunk(self):
+        
+    def all_ships_sunk(self)->bool:
         """
         Checks if all ships on the board have been sunk.
         
         Returns:
-            bool: True if there are no 'S' marks left on the board, False otherwise.
+            bool: True if there are no ship left on the board, False otherwise.
         """
         if len(self.ships_position) == 0:
             return True
