@@ -1,23 +1,14 @@
+import BattleShipGame
 print("Battleship Game")
 print("Welcome to this game")
 
-#ทำงานซ้ำ
-while True:
-    ships_board = [['O'] * 10 for _ in range(10)]
+player_board = BattleShipGame.BoardGame()
 
-    board_to_print = ships_board
-        
-    print("  " + " ".join("ABCDEFGHIJ"))
-    for i, row in enumerate(board_to_print):
-        print(f"{i+1:<2}" + " ".join(row))
-        
+player_board.print_board()
+player_board.place_ships_randomly()
 
-    print("if you want to quit please input -Quit-")
-    command = input("\n> ").lower()
-    
-    if command == 'quit':
-        print("ลาก่อน! นะครับ")
-        break
-    else:
-        print("คำสั่งไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง")
-
+while not player_board.all_ships_sunk():
+  x = int(input("input position: "))
+  y = int(input("input position: "))
+  player_board.take_shot(x,y)
+  player_board.print_board()
