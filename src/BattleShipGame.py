@@ -1,5 +1,6 @@
 import random
 
+
 class BoardGame:
     def __init__(self):
         self.ships_board = [['O'] * 10 for _ in range(10)]
@@ -16,14 +17,19 @@ class BoardGame:
      
     def print_board(self):
         """
-        Prints the game board to the console.
+        Prints the game board to the console and ship positions in human-readable format.
         """
         board_to_print = self.ships_board
         print("  " + " ".join("ABCDEFGHIJ"))
         for i, row in enumerate(board_to_print):
             print(f"{i+1:<2}" + " ".join(row))
-        print(self.ships_position)
-            
+        # Print ships_position in readable format
+        readable_positions = {
+            ship: [f"{chr(c + ord('A'))} {r + 1}" for r, c in positions]
+            for ship, positions in self.ships_position.items()
+        }
+        print(readable_positions)
+        
     def place_ships_randomly(self):
         """
         random place ship in board
@@ -46,27 +52,27 @@ class BoardGame:
                         if not (row,col) in position:
                             self.ships_position[ship_name] =  [(r,col) for r in range(row, row + size)]
                             placed = True
-                    
-    def take_shot(self, row:int, col:int)->bool:
+                            
+    def take_shot(self, row, col) -> bool:
         """
         Processes a shot at the given coordinates on the ships_board.
-        
+
         Args:
             row (int): The row index of the shot.
             col (int): The column index of the shot.
-            
+
         Returns:
             bool: True if the shot was a hit, False otherwise.
         """
-        for ship_name,position in self.ships_position.items():
-            if (row,col) in position:
-                for r,c in position:
+        for ship_name, position in self.ships_position.items():
+            if (row, col) in position:
+                for r, c in position:
                     self.ships_board[r][c] = 'H'
                 del self.ships_position[ship_name]
                 return True
         self.ships_board[row][col] = 'M'
         return False
-        
+    
     def all_ships_sunk(self)->bool:
         """
         Checks if all ships on the board have been sunk.
@@ -77,3 +83,5 @@ class BoardGame:
         if len(self.ships_position) == 0:
             return True
         return False
+                 
+        
