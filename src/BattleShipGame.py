@@ -3,8 +3,16 @@ import random
 class BoardGame:
     def __init__(self):
         self.ships_board = [['O'] * 10 for _ in range(10)]
-        self.ships_number = 10
-        self.ships_position = []
+        self.ships = {
+            "Destroyer":3,
+            "submarine":3,
+            "patrol_boat":2
+        }
+        self.ships_position = {
+            "Destroyer":[],
+            "submarine":[],
+            "patrol_boat":[]
+        }
      
     def print_board(self):
         """
@@ -14,16 +22,30 @@ class BoardGame:
         print("  " + " ".join("ABCDEFGHIJ"))
         for i, row in enumerate(board_to_print):
             print(f"{i+1:<2}" + " ".join(row))
+        print(self.ships_position)
             
     def place_ships_randomly(self):
         """
         random place ship in board
         """
-        for _ in range(self.ships_number):
-            row = random.randint(0, 9)
-            col = random.randint(0, 9)
-            if not (row,col) in self.ships_position:
-                self.ships_position.append((row,col))
+        for ship_name,size in self.ships.items():
+            placed = False
+            while not placed:
+                orientation = random.choice(['H', 'V'])
+                if orientation == 'H':
+                    row = random.randint(0, 9)
+                    col = random.randint(0, 10 - size)
+                    for position in self.ships_position.values():
+                        if not (row,col) in position:
+                            self.ships_position[ship_name] =  [(row,c) for c in range(col, col + size)]
+                            placed = True
+                else:
+                    row = random.randint(0, 10 - size)
+                    col = random.randint(0, 9)
+                    for position in self.ships_position.values():
+                        if not (row,col) in position:
+                            self.ships_position[ship_name] =  [(r,col) for r in range(row, row + size)]
+                            placed = True
                     
     def take_shot(self, row:int, col:int)->bool:
         """
@@ -36,16 +58,14 @@ class BoardGame:
         Returns:
             bool: True if the shot was a hit, False otherwise.
         """
-        if row > 10 and col > 10:
-            print("input (0-9)")
-            return False
-        if (row,col) in self.ships_position:
-            self.ships_board[row-1][col-1] = 'H'
-            self.ships_position.remove((row,col))
-            return True
-        else:
-            self.ships_board[row-1][col-1] = 'X'
-            return False
+        for ship_name,position in self.ships_position.items():
+            if (row,col) in position:
+                for r,c in position:
+                    self.ships_board[r][c] = 'H'
+                del self.ships_position[ship_name]
+                return True
+        self.ships_board[row][col] = 'M'
+        return False
         
     def all_ships_sunk(self)->bool:
         """
