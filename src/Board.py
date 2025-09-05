@@ -1,7 +1,7 @@
 import random
 
 
-class BoardGame:
+class Board:
     def __init__(self):
         self.ships_board = [['O'] * 10 for _ in range(10)]
         self.ships = {
