@@ -1,5 +1,6 @@
 import Board
 class BattleShipGame:
+    
     def __init__(self):
         self.player_board = Board.Board()
     
@@ -13,19 +14,16 @@ class BattleShipGame:
         self.player_board.print_board()
         
         while not self.player_board.all_ships_sunk():
-            while True:
-                position = input("Enter row and column or quit(e.g. A1-j10): ")
-                if position.lower() == "quit":
-                    break
-                if len(position) != 2:
-                    print("Input cannot be empty. Please try again.")
-                    continue
-                if self.is_valid_position(position[0], position[1]):
-                    break
-                print("Invalid input! Please enter a letter A-J and a number 1-10.")
+            position = input("Enter row and column or quit(e.g. A1-j10): ")
             if position.lower() == "quit":
                 print("You quit the game has stop")
                 break
+            if len(position) != 2:
+                print("Input cannot be empty. Please try again.")
+                continue
+            if not self.is_valid_position(position[0], position[1]):
+                print("Invalid input! Please enter a letter A-J and a number 1-10.")
+                continue
             row, col = self.parse_position(position[0], position[1])
             self.player_board.take_shot(row, col)
             self.player_board.print_board()
@@ -33,6 +31,7 @@ class BattleShipGame:
         if self.player_board.all_ships_sunk():
             print("All ships have been sunk! You win!")
         #You can run this file to play the game in the console
+        
     def parse_position(self,pos1, pos2):
         # If pos1 is a letter, it's the column; if it's a digit, it's the row
         if pos1.isalpha():

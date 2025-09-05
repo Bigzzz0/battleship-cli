@@ -64,13 +64,16 @@ class Board:
         Returns:
             bool: True if the shot was a hit, False otherwise.
         """
+        RED = "\033[31m"
+        GREEN = "\033[32m"
+        RESET = "\033[0m"
         for ship_name, position in self.ships_position.items():
             if (row, col) in position:
                 for r, c in position:
-                    self.ships_board[r][c] = 'H'
+                    self.ships_board[r][c] = f'{GREEN}H{RESET}'
                 del self.ships_position[ship_name]
                 return True
-        self.ships_board[row][col] = 'M'
+        self.ships_board[row][col] = f'{RED}M{RESET}'
         return False
     
     def all_ships_sunk(self)->bool:
