@@ -2,9 +2,16 @@ import Board
 class BattleShipGame:
     
     def __init__(self):
+        '''
+            Board is Created\n
+            Obj.startGame() to Enjoy.
+        '''
         self.player_board = Board.Board()
     
-    def startGame(self):
+    def startGame(self)->None:
+        '''
+            Start Play BattleShipGame Enjoy :).
+        '''
         print("Battleship Game")
         print("Welcome to this game")
         print("You are the gunner, your mission is to sink all the ships")
@@ -32,7 +39,12 @@ class BattleShipGame:
             print("All ships have been sunk! You win!")
         #You can run this file to play the game in the console
         
-    def parse_position(self,pos1, pos2):
+    def parse_position(self,pos1:str, pos2:str)->tuple:
+        '''
+        if pos1 = str than pos2 = int
+        or pos2 = int than pos1 = str\n
+        RETURN (int,int)
+        '''
         # If pos1 is a letter, it's the column; if it's a digit, it's the row
         if pos1.isalpha():
             col = ord(pos1.upper()) - ord('A')
@@ -42,8 +54,10 @@ class BattleShipGame:
             col = ord(pos2.upper()) - ord('A')
         return row, col
 
-    def is_valid_position(self,pos1, pos2):
-        #check if pos1 and pos2 are valid
+    def is_valid_position(self,pos1:str, pos2:str)->bool:
+        '''
+            check if pos1 and pos2 are valid (A-J and 1-10)
+        '''
         if pos1.isalpha():
             if pos1.upper() < 'A' or pos1.upper() > 'J':
                 return False

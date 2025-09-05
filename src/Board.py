@@ -15,9 +15,9 @@ class Board:
             "patrol_boat":[]
         }
      
-    def print_board(self):
+    def print_board(self)->None:
         """
-        Prints the game board to the console and ship positions in human-readable format.
+            Prints the game board to the console and ship positions in human-readable format.
         """
         board_to_print = self.ships_board
         print("  " + " ".join("ABCDEFGHIJ"))
@@ -30,30 +30,35 @@ class Board:
         }
         print(readable_positions)
         
-    def place_ships_randomly(self):
+    def place_ships_randomly(self)->None:
         """
-        random place ship in board
+            random place ship in board
         """
         for ship_name,size in self.ships.items():
             placed = False
             while not placed:
+                #สุ่มแนวตั้งแนวนอน
                 orientation = random.choice(['H', 'V'])
                 if orientation == 'H':
+                    #แถวตั้ง
                     row = random.randint(0, 9)
                     col = random.randint(0, 10 - size)
+                    #เช็คว่าทับเรือลำอื่นหรือปล่าว
                     for position in self.ships_position.values():
-                        if not (row,col) in position:
+                        if not (row,col) in position:#ยังต้องแก้
                             self.ships_position[ship_name] =  [(row,c) for c in range(col, col + size)]
                             placed = True
                 else:
+                    #แถวนอน
                     row = random.randint(0, 10 - size)
                     col = random.randint(0, 9)
+                    #เช็คว่าทับเรือลำอื่นหรือปล่าว
                     for position in self.ships_position.values():
-                        if not (row,col) in position:
+                        if not (row,col) in position:#ยังต้องแก้
                             self.ships_position[ship_name] =  [(r,col) for r in range(row, row + size)]
                             placed = True
                             
-    def take_shot(self, row, col) -> bool:
+    def take_shot(self, row:int, col:int) -> bool:
         """
         Processes a shot at the given coordinates on the ships_board.
 
@@ -64,6 +69,7 @@ class Board:
         Returns:
             bool: True if the shot was a hit, False otherwise.
         """
+        #สีตัวอักษร
         RED = "\033[31m"
         GREEN = "\033[32m"
         RESET = "\033[0m"
