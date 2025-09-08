@@ -18,7 +18,7 @@ class BattleShipGame:
         
         self.player_board.place_ships_randomly()
         
-        self.player_board.print_board()
+        self.player_board.print_board(Debug=True)
         
         while not self.player_board.all_ships_sunk():
             position = input("Enter row and column or quit(e.g. A1-j10): ")
@@ -26,14 +26,35 @@ class BattleShipGame:
                 print("You quit the game has stop")
                 break
             if len(position) != 2:
-                print("Input cannot be empty. Please try again.")
+                if len(position) != 3 or position[1:3] != "10":
+                    if position[0:2] != "10":
+                        print("Input cannot be empty. Please try again.")
+                        continue
+                    # len(position) == 3 (e.g. 10a)
+                    if not self.is_valid_position(position[0:2], position[2]):
+                        print("Test2")
+                        print("Invalid input! Please enter a letter A-J and a number 1-10.")
+                        continue
+                    row, col = self.parse_position(position[0:2], position[2])
+                    self.player_board.take_shot(row, col)
+                    self.player_board.print_board(Debug=True)
+                    continue
+                # len(position) == 3 (e.g. a10)
+                if not self.is_valid_position(position[0], position[1:3]):
+                    print("Test")
+                    print("Invalid input! Please enter a letter A-J and a number 1-10.")
+                    continue
+                row, col = self.parse_position(position[0], position[1:3])
+                self.player_board.take_shot(row, col)
+                self.player_board.print_board(Debug=True)
                 continue
+                # len(position) == 2 
             if not self.is_valid_position(position[0], position[1]):
                 print("Invalid input! Please enter a letter A-J and a number 1-10.")
                 continue
             row, col = self.parse_position(position[0], position[1])
             self.player_board.take_shot(row, col)
-            self.player_board.print_board()
+            self.player_board.print_board(Debug=True)
 
         if self.player_board.all_ships_sunk():
             print("All ships have been sunk! You win!")

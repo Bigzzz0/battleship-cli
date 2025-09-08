@@ -15,7 +15,7 @@ class Board:
             "patrol_boat":[]
         }
      
-    def print_board(self)->None:
+    def print_board(self,Debug = False)->None:
         """
             Prints the game board to the console and ship positions in human-readable format.
         """
@@ -24,15 +24,16 @@ class Board:
         for i, row in enumerate(board_to_print):
             print(f"{i+1:<2}" + " ".join(row))
         # Print ships_position in readable format
-        readable_positions = {
-            ship: [f"{chr(c + ord('A'))} {r + 1}" for r, c in positions]
-            for ship, positions in self.ships_position.items()
-        }
-        print(readable_positions)
+        if Debug == True:
+            readable_positions = {
+                ship: [f"{chr(c + ord('A'))} {r + 1}" for r, c in positions]
+                for ship, positions in self.ships_position.items()
+            }
+            print(readable_positions)
         
-    def place_ships_randomly(self)->None:
+    def place_ships_randomly(self)->None:# H and V
         """
-            random place ship in board
+            random place ship in board 
         """
         for ship_name,size in self.ships.items():
             placed = False
@@ -45,7 +46,7 @@ class Board:
                     col = random.randint(0, 10 - size)
                     #เช็คว่าทับเรือลำอื่นหรือปล่าว
                     location = [(row,c) for c in range(col, col + size)]
-                    if self.is_valid_placement(location):#ยังต้องแก้
+                    if self.is_valid_placement(location):
                         self.ships_position[ship_name] =  location
                         placed = True
                 else:
@@ -54,13 +55,13 @@ class Board:
                     col = random.randint(0, 9)
                     #เช็คว่าทับเรือลำอื่นหรือปล่าว
                     location = [(r,col) for r in range(row, row + size)]
-                    if self.is_valid_placement(location):#ยังต้องแก้
+                    if self.is_valid_placement(location):
                         self.ships_position[ship_name] =  location
                         placed = True
                             
-    def is_valid_placement(self, placedposition)->bool:
+    def is_valid_placement(self, location:tuple)->bool:#detail
         for position in self.ships_position.values():
-            for loc in placedposition:
+            for loc in location:
                 if loc in position:
                     return False
         return True
