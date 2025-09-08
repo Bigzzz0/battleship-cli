@@ -1,6 +1,7 @@
 # Battleship Board Game CLI
 
 โปรเจกต์นี้คือการพัฒนาเกมเรือรบ (Battleship) ในรูปแบบ Command Line Interface (CLI) โดยใช้ภาษา Python. การพัฒนานี้แบ่งออกเป็น Sprint รายสัปดาห์.
+https://colab.research.google.com/drive/1h75_nN5lcmN3DCmuBE58Rn5l0spMxP20?usp=sharing
 
 ## สรุปความคืบหน้า (Progress Summary)
 
