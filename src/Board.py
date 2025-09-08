@@ -44,20 +44,27 @@ class Board:
                     row = random.randint(0, 9)
                     col = random.randint(0, 10 - size)
                     #เช็คว่าทับเรือลำอื่นหรือปล่าว
-                    for position in self.ships_position.values():
-                        if not (row,col) in position:#ยังต้องแก้
-                            self.ships_position[ship_name] =  [(row,c) for c in range(col, col + size)]
-                            placed = True
+                    location = [(row,c) for c in range(col, col + size)]
+                    if self.is_valid_placement(location):#ยังต้องแก้
+                        self.ships_position[ship_name] =  location
+                        placed = True
                 else:
                     #แถวนอน
                     row = random.randint(0, 10 - size)
                     col = random.randint(0, 9)
                     #เช็คว่าทับเรือลำอื่นหรือปล่าว
-                    for position in self.ships_position.values():
-                        if not (row,col) in position:#ยังต้องแก้
-                            self.ships_position[ship_name] =  [(r,col) for r in range(row, row + size)]
-                            placed = True
+                    location = [(r,col) for r in range(row, row + size)]
+                    if self.is_valid_placement(location):#ยังต้องแก้
+                        self.ships_position[ship_name] =  location
+                        placed = True
                             
+    def is_valid_placement(self, placedposition)->bool:
+        for position in self.ships_position.values():
+            for loc in placedposition:
+                if loc in position:
+                    return False
+        return True
+                                
     def take_shot(self, row:int, col:int) -> bool:
         """
         Processes a shot at the given coordinates on the ships_board.
@@ -73,13 +80,18 @@ class Board:
         RED = "\033[31m"
         GREEN = "\033[32m"
         RESET = "\033[0m"
+        if self.ships_board[row][col] == f'{GREEN}H{RESET}' or self.ships_board[row][col] == f'{RED}M{RESET}':
+            print("You already Hit that before.\n")
+            return False
         for ship_name, position in self.ships_position.items():
             if (row, col) in position:
                 for r, c in position:
                     self.ships_board[r][c] = f'{GREEN}H{RESET}'
+                print("Hit! You sunk " +ship_name+ ".\n")
                 del self.ships_position[ship_name]
                 return True
         self.ships_board[row][col] = f'{RED}M{RESET}'
+        print("Miss!.\n")
         return False
     
     def all_ships_sunk(self)->bool:
