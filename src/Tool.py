@@ -40,11 +40,15 @@ def is_valid_position(pos1:str, pos2:str)->bool:
         check if pos1 and pos2 are valid (A-J and 1-10)
     '''
     if pos1.isalpha():
+        if len(pos1) != 1:
+          return False
         if pos1.upper() < 'A' or pos1.upper() > 'J':
             return False
         if not pos2.isdigit() or int(pos2) < 1 or int(pos2) > 10:
             return False
     elif pos1.isdigit():
+        if len(pos2) != 1:
+          return False
         if int(pos1) < 1 or int(pos1) > 10:
             return False
         if not pos2.isalpha() or pos2.upper() < 'A' or pos2.upper() > 'J':
