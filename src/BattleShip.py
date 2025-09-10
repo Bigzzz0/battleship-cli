@@ -1,4 +1,5 @@
-import Board
+from Board import Board
+from Tool import parse_position,is_valid_position
 class BattleShipGame:
     
     def __init__(self):
@@ -6,9 +7,9 @@ class BattleShipGame:
             Board is Created\n
             Obj.startGame() to Enjoy.
         '''
-        self.player_board = Board.Board()
+        self.player_board = Board()
     
-    def startGame(self)->None:
+    def startGame(self,Debug = False)->None:
         '''
             Start Play BattleShipGame Enjoy :).
         '''
@@ -18,77 +19,31 @@ class BattleShipGame:
         
         self.player_board.place_ships_randomly()
         
-        self.player_board.print_board(Debug=True)
+        self.player_board.print_board(Debug)
         
         while not self.player_board.all_ships_sunk():
             position = input("Enter row and column or quit(e.g. A1-j10): ")
             if position.lower() == "quit":
                 print("You quit the game has stop")
                 break
-            if len(position) != 2:
-                if len(position) != 3 or position[1:3] != "10":
-                    if position[0:2] != "10":
-                        print("Input cannot be empty. Please try again.")
-                        continue
-                    # len(position) == 3 (e.g. 10a)
-                    if not self.is_valid_position(position[0:2], position[2]):
-                        print("Test2")
-                        print("Invalid input! Please enter a letter A-J and a number 1-10.")
-                        continue
-                    row, col = self.parse_position(position[0:2], position[2])
-                    self.player_board.take_shot(row, col)
-                    self.player_board.print_board(Debug=True)
-                    continue
-                # len(position) == 3 (e.g. a10)
-                if not self.is_valid_position(position[0], position[1:3]):
-                    print("Test")
-                    print("Invalid input! Please enter a letter A-J and a number 1-10.")
-                    continue
-                row, col = self.parse_position(position[0], position[1:3])
-                self.player_board.take_shot(row, col)
-                self.player_board.print_board(Debug=True)
+            if len(position) != 2 and not (len(position) == 3 and (position[1:3] == "10" or position[0:2] == "10")):
+                print("Input cannot be empty. Please try again.")
                 continue
-                # len(position) == 2 
-            if not self.is_valid_position(position[0], position[1]):
+            r,c = position[0],position[1]
+            if (len(position) == 3 and (position[1:3] == "10" or position[0:2] == "10")):
+                if position[1:3] == "10":
+                    r,c = position[0],position[1:3]
+                else:
+                    r,c = position[0:2],position[2]
+            if not is_valid_position(r, c):
                 print("Invalid input! Please enter a letter A-J and a number 1-10.")
                 continue
-            row, col = self.parse_position(position[0], position[1])
+            row, col = parse_position(r, c)
             self.player_board.take_shot(row, col)
-            self.player_board.print_board(Debug=True)
+            self.player_board.print_board(Debug)
 
         if self.player_board.all_ships_sunk():
             print("All ships have been sunk! You win!")
         #You can run this file to play the game in the console
         
-    def parse_position(self,pos1:str, pos2:str)->tuple:
-        '''
-        if pos1 = str than pos2 = int
-        or pos2 = int than pos1 = str\n
-        RETURN (int,int)
-        '''
-        # If pos1 is a letter, it's the column; if it's a digit, it's the row
-        if pos1.isalpha():
-            col = ord(pos1.upper()) - ord('A')
-            row = int(pos2) - 1
-        else:
-            row = int(pos1) - 1
-            col = ord(pos2.upper()) - ord('A')
-        return row, col
-
-    def is_valid_position(self,pos1:str, pos2:str)->bool:
-        '''
-            check if pos1 and pos2 are valid (A-J and 1-10)
-        '''
-        if pos1.isalpha():
-            if pos1.upper() < 'A' or pos1.upper() > 'J':
-                return False
-            if not pos2.isdigit() or int(pos2) < 1 or int(pos2) > 10:
-                return False
-        elif pos1.isdigit():
-            if int(pos1) < 1 or int(pos1) > 10:
-                return False
-            if not pos2.isalpha() or pos2.upper() < 'A' or pos2.upper() > 'J':
-                return False
-        else:
-            return False
-        return True
+    

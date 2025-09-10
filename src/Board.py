@@ -1,19 +1,18 @@
 import random
-
+from Tool import ColorFront
 
 class Board:
     def __init__(self):
         self.ships_board = [['O'] * 10 for _ in range(10)]
         self.ships = {
-            "Destroyer":3,
             "submarine":3,
-            "patrol_boat":2
+            "patrol_boat":2,
+            "Carrier": 5,
+            "Battleship": 4,
+            "Cruiser": 3,
+            "Destroyer": 2
         }
-        self.ships_position = {
-            "Destroyer":[],
-            "submarine":[],
-            "patrol_boat":[]
-        }
+        self.ships_position = {}
      
     def print_board(self,Debug = False)->None:
         """
@@ -77,21 +76,17 @@ class Board:
         Returns:
             bool: True if the shot was a hit, False otherwise.
         """
-        #สีตัวอักษร
-        RED = "\033[31m"
-        GREEN = "\033[32m"
-        RESET = "\033[0m"
-        if self.ships_board[row][col] == f'{GREEN}H{RESET}' or self.ships_board[row][col] == f'{RED}M{RESET}':
+        if self.ships_board[row][col] == ColorFront("\033[32m","H") or self.ships_board[row][col] == ColorFront("\033[31m","M"):
             print("You already Hit that before.\n")
             return False
         for ship_name, position in self.ships_position.items():
             if (row, col) in position:
                 for r, c in position:
-                    self.ships_board[r][c] = f'{GREEN}H{RESET}'
+                    self.ships_board[r][c] = ColorFront("\033[32m","H")
                 print("Hit! You sunk " +ship_name+ ".\n")
                 del self.ships_position[ship_name]
                 return True
-        self.ships_board[row][col] = f'{RED}M{RESET}'
+        self.ships_board[row][col] = ColorFront("\033[31m","M")
         print("Miss!.\n")
         return False
     
