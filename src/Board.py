@@ -12,7 +12,14 @@ class Board:
             "Cruiser": 3,
             "Destroyer": 2
         }
-        self.ships_position = {}
+        self.ships_position = {
+            "submarine":[],
+            "patrol_boat":[],
+            "Carrier": [],
+            "Battleship": [],
+            "Cruiser": [],
+            "Destroyer": []
+        }
      
     def print_board(self,Debug = False)->None:
         """
