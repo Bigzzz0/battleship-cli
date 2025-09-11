@@ -3,7 +3,7 @@ import random
 import sys
 from unittest.mock import patch, MagicMock
 from io import StringIO
-from Board import Board
+from BattleShipGame.Board import Board
 
 # Set a fixed seed for reproducibility of random ship placements
 random.seed(42)
@@ -97,7 +97,7 @@ class TestBoard(unittest.TestCase):
         """
         Test that `take_shot` returns False if a coordinate has already been hit.
         """
-        with patch('Tool.ColorFront', side_effect=lambda color, data: f"{color}{data}\033[0m"):
+        with patch('BattleShipGame.Tool.ColorFront', side_effect=lambda color, data: f"{color}{data}\033[0m"):
             self.board.ships_board[0][0] = "\033[32mH\033[0m"
             is_hit = self.board.take_shot(0, 0)
             self.assertFalse(is_hit)
@@ -121,7 +121,3 @@ class TestBoard(unittest.TestCase):
         
         # Now all ships are "sunk" and it should be true
         self.assertTrue(self.board.all_ships_sunk())
-
-
-if __name__ == '__main__':
-    unittest.main()

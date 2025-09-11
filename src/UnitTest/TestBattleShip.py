@@ -4,8 +4,8 @@ import unittest
 import sys
 from io import StringIO
 from unittest.mock import patch, MagicMock
-from BattleShip import BattleShipGame
-from Board import Board
+from BattleShipGame.BattleShip import BattleShipGame
+from BattleShipGame.Board import Board
 
 # Mock the Board class
 class MockBoard(Board):
@@ -45,9 +45,9 @@ def mock_parse_position(pos1: str, pos2: str) -> tuple:
         return (0, 0)
     return (0, 0) # Fallback to a safe value
 
-@patch('BattleShip.Board', new=MockBoard)
-@patch('BattleShip.is_valid_position', new=mock_is_valid_position)
-@patch('BattleShip.parse_position', new=mock_parse_position)
+@patch('BattleShipGame.BattleShip.Board', new=MockBoard)
+@patch('BattleShipGame.BattleShip.is_valid_position', new=mock_is_valid_position)
+@patch('BattleShipGame.BattleShip.parse_position', new=mock_parse_position)
 class TestBattleShipGame(unittest.TestCase):
     
     def setUp(self):
@@ -83,6 +83,3 @@ class TestBattleShipGame(unittest.TestCase):
                     self.game.startGame()
                     output = mock_stdout.getvalue()
                     self.assertIn("All ships have been sunk! You win!", output)
-
-if __name__ == '__main__':
-    unittest.main()

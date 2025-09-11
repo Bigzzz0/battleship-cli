@@ -1,5 +1,5 @@
 import unittest
-from Tool import parse_position, is_valid_position
+from BattleShipGame.Tool import parse_position, is_valid_position
 
 class TestTool(unittest.TestCase):
     
@@ -41,6 +41,3 @@ class TestTool(unittest.TestCase):
         self.assertFalse(is_valid_position('AA', '1'))    # pos1 too long
         self.assertFalse(is_valid_position('A', '100'))   # pos2 too long
         self.assertFalse(is_valid_position('12', 'A'))    # pos1 too long
-
-if __name__ == '__main__':
-    unittest.main()

@@ -1,5 +1,5 @@
-from Board import Board
-from Tool import parse_position,is_valid_position
+from BattleShipGame.Board import Board
+from BattleShipGame.Tool import parse_position,is_valid_position
 class BattleShipGame:
     
     def __init__(self):

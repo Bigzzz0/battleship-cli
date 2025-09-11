@@ -1,5 +1,5 @@
 import random
-from Tool import ColorFront
+from BattleShipGame.Tool import ColorFront
 
 class Board:
     def __init__(self):
