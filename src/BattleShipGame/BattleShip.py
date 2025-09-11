@@ -27,7 +27,7 @@ class BattleShipGame:
                 print("You quit the game has stop")
                 break
             if len(position) != 2 and not (len(position) == 3 and (position[1:3] == "10" or position[0:2] == "10")):
-                print("Input cannot be empty. Please try again.")
+                print("Input is incorrect. Please try again.")
                 continue
             r,c = position[0],position[1]
             if (len(position) == 3 and (position[1:3] == "10" or position[0:2] == "10")):
