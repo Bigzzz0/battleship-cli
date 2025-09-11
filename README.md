@@ -2,6 +2,8 @@
 
 นี่คือเกม Battleship แบบ Command-Line Interface ที่พัฒนาขึ้นเป็นโปรเจกต์ย่อย
 
+**ลิงก์ Google Colab:** [https://colab.research.google.com/drive/1h75_nN5lcmN3DCmuBE58Rn5l0spMxP20?usp=sharing](https://colab.research.google.com/drive/1h75_nN5lcmN3DCmuBE58Rn5l0spMxP20?usp=sharing)
+
 ## เป้าหมายของโปรเจกต์
 
 เป้าหมายหลักของโปรเจกต์นี้คือ:
@@ -96,8 +98,6 @@
 *   **บิ๊ก (Planner / Coder):** วางแผนโปรเจกต์, ตั้งค่า repository, ออกแบบโครงสร้างโดยรวม
 *   **อาต (Coder / Debugger ):** Implement logic หลักของเกม, การวางเรือ, การจัดการการยิง
 *   **แทน (Debugger / Planner ):** การทดสอบ, การ Debug, การรีวิวโค้ด, จัดทำเอกสาร
-
-
 
 ## การพัฒนาเพิ่มเติมในอนาคต
 
