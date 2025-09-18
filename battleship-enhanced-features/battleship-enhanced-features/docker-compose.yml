@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  battleship-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - ./app:/app/app
+    restart: unless-stopped
+
+  battleship-frontend:
+    # This tells Docker Compose to build the image from the 'battleship-frontend' directory
+    build:
+      context: ./battleship-frontend
+      dockerfile: Dockerfile
+    ports:
+      # Exposes the Vite dev server port (default is 5173)
+      - "5173:5173" 
+    volumes:
+      # Mounts the frontend source code for hot-reloading
+      - ./battleship-frontend:/app
+      # Prevents the local node_modules from overwriting the container's node_modules
+      - /app/node_modules
+    restart: unless-stopped
+    # Optional: Ensures the API starts before the frontend attempts to connect
+    depends_on:
+      - battleship-api
+
