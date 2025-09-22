@@ -42,7 +42,7 @@ function App() {
   const { playSound, soundEnabled, setSoundEnabled } = useSoundEffects();
 
   // Create new game
-  const createNewGame = async (useCustomShips = false) => {
+  const createNewGame = async (useCustomShips = false, shipsOverride = null) => {
     try {
       // สำหรับเกมกับ AI - บังคับให้ใช้ Custom Ship Placement
       if (aiEnabled && !useCustomShips && !customShips) {
@@ -54,10 +54,17 @@ function App() {
       setMessage('Creating new game...');
       playSound('newGame');
 
+      const shipsToUse = useCustomShips ? (shipsOverride || customShips) : null;
+
+      if (useCustomShips && !shipsToUse) {
+        setMessage('Please place your ships before starting the game with AI!');
+        return;
+      }
+
       const requestBody = {
         with_ai: aiEnabled,
         ai_difficulty: aiDifficulty,
-        custom_ships: useCustomShips ? customShips : null
+        custom_ships: shipsToUse
       };
 
       const response = await fetch(`${API_BASE}/games`, {
@@ -256,7 +263,7 @@ function App() {
   const handleShipsPlaced = (ships) => {
     setCustomShips(ships);
     setShowShipPlacement(false);
-    createNewGame(true);
+    createNewGame(true, ships);
   };
 
   // Toggle debug mode
