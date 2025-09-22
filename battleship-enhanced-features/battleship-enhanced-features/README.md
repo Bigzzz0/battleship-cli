@@ -29,11 +29,43 @@
 ```
 POST /games
 ```
-Response:
+
+**Request Body (optional)**
+
+```json
+{
+  "with_ai": true,
+  "difficulty": "hard",
+  "custom_ships": [...]
+}
+```
+
+- `with_ai`: `true` เพื่อเริ่มเกมสู้กับ AI (ค่าเริ่มต้น `false`).
+- `difficulty`: ระดับความยากของ AI (`"easy"`, `"medium"`, `"hard"`) ค่าเริ่มต้นคือ `"medium"`.
+- `custom_ships`: ระบุตำแหน่งเรือของผู้เล่นเอง (ใช้รูปแบบเดียวกับบริการ `validate`).
+
+**Response (เล่นคนเดียว)**
+
 ```json
 {
   "game_id": "uuid",
-  "board_state": [[...]]
+  "board_state": [[...]],
+  "has_ai": false
+}
+```
+
+**Response (เล่นกับ AI)**
+
+```json
+{
+  "game_id": "uuid",
+  "player_board_state": [[...]],
+  "ai_board_state": [[...]],
+  "player_ships_remaining": [...],
+  "ai_ships_remaining": [...],
+  "current_turn": "player",
+  "has_ai": true,
+  "ai_difficulty": "hard"
 }
 ```
 
@@ -41,17 +73,37 @@ Response:
 ```
 GET /games/{game_id}
 ```
-Response:
+
+**Response (เล่นคนเดียว)**
+
 ```json
 {
   "game_id": "uuid",
   "board_state": [[...]],
   "ships_remaining": [...],
-  "all_ships_sunk": false
+  "all_ships_sunk": false,
+  "has_ai": false
 }
 ```
 
-### 3. ยิงเป้า
+**Response (เล่นกับ AI)**
+
+```json
+{
+  "game_id": "uuid",
+  "player_board_state": [[...]],
+  "ai_board_state": [[...]],
+  "player_ships_remaining": [...],
+  "ai_ships_remaining": [...],
+  "all_ships_sunk": {"player": false, "ai": false},
+  "current_turn": "player",
+  "winner": null,
+  "has_ai": true,
+  "ai_difficulty": "medium"
+}
+```
+
+### 3. ยิงเป้า (เทิร์นของผู้เล่น)
 ```
 POST /games/{game_id}/fire
 Content-Type: application/json
@@ -60,7 +112,9 @@ Content-Type: application/json
   "position": "A1"
 }
 ```
-Response:
+
+**Response (เล่นคนเดียว)**
+
 ```json
 {
   "status": "hit|miss|already_shot|error",
@@ -69,6 +123,57 @@ Response:
   "board_state": [[...]],
   "ships_remaining": [...],
   "all_ships_sunk": false
+}
+```
+
+**Response (เล่นกับ AI)**
+
+```json
+{
+  "game_id": "uuid",
+  "has_ai": true,
+  "ai_difficulty": "medium",
+  "player_shot": {
+    "status": "hit|miss|already_shot|error",
+    "message": "...",
+    "position": "A1",
+    "target": "ai",
+    "ships_remaining": [...],
+    "all_ships_sunk": false
+  },
+  "player_board_state": [[...]],
+  "ai_board_state": [[...]],
+  "player_ships_remaining": [...],
+  "ai_ships_remaining": [...],
+  "current_turn": "ai"
+}
+```
+
+### 4. ให้ AI ยิง (เทิร์นของ AI)
+```
+POST /games/{game_id}/ai-shot
+```
+
+เรียกใช้หลังจากที่ `current_turn` เป็น `"ai"` ผลลัพธ์จะมีรายละเอียดการยิงของ AI:
+
+```json
+{
+  "game_id": "uuid",
+  "has_ai": true,
+  "ai_difficulty": "medium",
+  "ai_shot": {
+    "status": "hit|miss|already_shot|error",
+    "message": "...",
+    "position": "B5",
+    "target": "player",
+    "ships_remaining": [...],
+    "all_ships_sunk": false
+  },
+  "player_board_state": [[...]],
+  "ai_board_state": [[...]],
+  "player_ships_remaining": [...],
+  "ai_ships_remaining": [...],
+  "current_turn": "player"
 }
 ```
 
@@ -121,7 +226,7 @@ pytest
 ## ขั้นตอนถัดไป
 
 1. **Frontend Development**: สร้าง React frontend ด้วย Tailwind CSS
-2. **AI Integration**: เพิ่ม AI opponent
+2. **AI Improvements**: ปรับปรุงกลยุทธ์ AI เพิ่มเติม
 3. **Database**: เพิ่ม database สำหรับเก็บ game state
 4. **Authentication**: เพิ่มระบบ user authentication
 5. **Multiplayer**: เพิ่มฟีเจอร์ multiplayer

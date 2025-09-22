@@ -22,6 +22,7 @@ class ShotRequest(BaseModel):
 class CreateGameRequest(BaseModel):
     with_ai: bool = False
     custom_ships: Optional[list] = None
+    difficulty: str = "medium"
 
 class ShipPlacement(BaseModel):
     ship_name: str
@@ -44,7 +45,11 @@ async def create_game(request: CreateGameRequest = CreateGameRequest()):
         # แปลง custom_ships เป็น format ที่ backend ต้องการ
         custom_ships = [ship.dict() if hasattr(ship, 'dict') else ship for ship in request.custom_ships]
     
-    game_data = GameService.create_new_game(with_ai=request.with_ai, custom_ships=custom_ships)
+    game_data = GameService.create_new_game(
+        with_ai=request.with_ai,
+        custom_ships=custom_ships,
+        difficulty=request.difficulty,
+    )
     
     if "error" in game_data:
         raise HTTPException(status_code=400, detail=game_data["error"])

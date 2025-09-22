@@ -79,7 +79,7 @@ class Board:
             dict: A dictionary containing shot result (hit/miss) and updated board state.
         """
         if self.ships_board[row][col] == 'H' or self.ships_board[row][col] == 'M':
-            return {"status": "already_shot", "message": "You already shot at this position."}
+            return {"status": "already_shot", "message": "You already shot at this position.", "ship_sunk": False}
 
         for ship_name, position in list(self.ships_position.items()): # Use list() to allow modification during iteration
             if (row, col) in position:
@@ -87,10 +87,10 @@ class Board:
                 for r, c in position:
                     self.ships_board[r][c] = 'H'
                 del self.ships_position[ship_name] # Remove the ship if sunk
-                return {"status": "hit", "message": f"Hit! You sunk {ship_name}."}
+                return {"status": "hit", "message": f"Hit! You sunk {ship_name}.", "ship_sunk": True}
 
         self.ships_board[row][col] = 'M'
-        return {"status": "miss", "message": "Miss!"}
+        return {"status": "miss", "message": "Miss!", "ship_sunk": False}
 
     def all_ships_sunk(self) -> bool:
         """
