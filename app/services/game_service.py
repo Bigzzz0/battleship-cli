@@ -151,7 +151,7 @@ class GameService:
         """AI ยิงใส่กระดานผู้เล่น"""
         if game_id not in cls.games:
             return None
-        
+        time.sleep(2)  # Simulate thinking time for AI
         game = cls.games[game_id]
         
         # ตรวจสอบว่ามี AI หรือไม่
