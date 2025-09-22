@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  battleship-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - ./app:/app/app
+    restart: unless-stopped
+
+  battleship-frontend:
+    build:
+      context: ./battleship-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - battleship-api
+    restart: unless-stopped
+
+
