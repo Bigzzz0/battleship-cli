@@ -1,21 +1,27 @@
 import React from 'react';
 
-const GameBoard = ({ boardState, onCellClick, debugMode = false, shipsPosition = {} }) => {
+const GameBoard = ({
+  boardState,
+  onCellClick = () => {},
+  debugMode = false,
+  shipsPosition = {},
+  disabled = false,
+}) => {
   const columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
   const rows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const getCellClass = (row, col) => {
     const cellValue = boardState[row][col];
-    let baseClass = "w-8 h-8 border border-gray-400 cursor-pointer transition-colors duration-200 flex items-center justify-center text-sm font-bold";
-    
+    const baseClass = `w-8 h-8 border border-gray-400 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} transition-colors duration-200 flex items-center justify-center text-sm font-bold`;
+
     if (cellValue === 'H') {
-      return `${baseClass} bg-red-500 text-white hover:bg-red-600`;
+      return `${baseClass} bg-red-500 text-white${disabled ? '' : ' hover:bg-red-600'}`;
     } else if (cellValue === 'M') {
-      return `${baseClass} bg-blue-300 text-blue-800 hover:bg-blue-400`;
+      return `${baseClass} bg-blue-300 text-blue-800${disabled ? '' : ' hover:bg-blue-400'}`;
     } else if (debugMode && isShipPosition(row, col)) {
-      return `${baseClass} bg-yellow-200 hover:bg-yellow-300`;
+      return `${baseClass} bg-yellow-200${disabled ? '' : ' hover:bg-yellow-300'}`;
     } else {
-      return `${baseClass} bg-gray-100 hover:bg-gray-200`;
+      return `${baseClass} bg-gray-100${disabled ? '' : ' hover:bg-gray-200'}`;
     }
   };
 
@@ -66,8 +72,15 @@ const GameBoard = ({ boardState, onCellClick, debugMode = false, shipsPosition =
                 <button
                   key={`${col}${rowNum}`}
                   className={getCellClass(rowIndex, colIndex)}
-                  onClick={() => onCellClick(rowIndex, colIndex)}
-                  disabled={boardState[rowIndex][colIndex] === 'H' || boardState[rowIndex][colIndex] === 'M'}
+                  onClick={() => {
+                    if (disabled) return;
+                    onCellClick(rowIndex, colIndex);
+                  }}
+                  disabled={
+                    disabled ||
+                    boardState[rowIndex][colIndex] === 'H' ||
+                    boardState[rowIndex][colIndex] === 'M'
+                  }
                 >
                   {getCellContent(rowIndex, colIndex)}
                 </button>
