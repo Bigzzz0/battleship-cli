@@ -12,6 +12,10 @@ class Board:
             "Cruiser": 3,
             "Destroyer": 2
         }
+        self._initialize_ship_tracking()
+
+    def _initialize_ship_tracking(self) -> None:
+        """รีเซ็ตข้อมูลตำแหน่งเรือและสถานะที่ยังไม่ถูกยิง"""
         self.ships_position = {
             "submarine": [],
             "patrol_boat": [],
@@ -19,6 +23,10 @@ class Board:
             "Battleship": [],
             "Cruiser": [],
             "Destroyer": []
+        }
+        self.remaining_ship_positions = {
+            ship: set()
+            for ship in self.ships.keys()
         }
 
     def print_board(self, Debug=False) -> None:
@@ -41,6 +49,8 @@ class Board:
         """
             random place ship in board
         """
+        self._initialize_ship_tracking()
+
         for ship_name, size in self.ships.items():
             placed = False
             while not placed:
@@ -51,6 +61,7 @@ class Board:
                     location = [(row, c) for c in range(col, col + size)]
                     if self.is_valid_placement(location):
                         self.ships_position[ship_name] = location
+                        self.remaining_ship_positions[ship_name] = set(location)
                         placed = True
                 else:
                     row = random.randint(0, 10 - size)
@@ -58,6 +69,7 @@ class Board:
                     location = [(r, col) for r in range(row, row + size)]
                     if self.is_valid_placement(location):
                         self.ships_position[ship_name] = location
+                        self.remaining_ship_positions[ship_name] = set(location)
                         placed = True
 
     def is_valid_placement(self, location: list) -> bool:
@@ -89,21 +101,21 @@ class Board:
         for ship_name, positions in self.ships_position.items():
             if (row, col) in positions:
                 self.ships_board[row][col] = 'H'  # Mark only the hit part
-                
+
+                if ship_name in self.remaining_ship_positions:
+                    self.remaining_ship_positions[ship_name].discard((row, col))
+
                 # Check if the entire ship is sunk
-                is_sunk = True
-                for r, c in positions:
-                    if self.ships_board[r][c] != 'H':
-                        is_sunk = False
-                        break
-                
+                is_sunk = len(self.remaining_ship_positions.get(ship_name, set())) == 0
+
                 if is_sunk:
-                    del self.ships_position[ship_name]  # Remove the ship if sunk
+                    # รีเซ็ตตำแหน่งที่เหลือให้ว่างแต่ยังคงข้อมูลสำหรับ debug/display
+                    self.remaining_ship_positions[ship_name] = set()
                     return {
-                        "status": "hit", 
-                        "message": f"Hit! You sunk {ship_name}.", 
-                        "ship_sunk": True, 
-                        "sunk_ship_name": ship_name, 
+                        "status": "hit",
+                        "message": f"Hit! You sunk {ship_name}.",
+                        "ship_sunk": True,
+                        "sunk_ship_name": ship_name,
                         "all_ships_sunk": self.all_ships_sunk()
                     }
                 else:
@@ -129,7 +141,7 @@ class Board:
         Returns:
             bool: True if there are no ship left on the board, False otherwise.
         """
-        return len(self.ships_position) == 0
+        return all(len(positions) == 0 for positions in self.remaining_ship_positions.values())
 
     def get_board_state(self) -> list[list[str]]:
         """
@@ -141,7 +153,11 @@ class Board:
         """
         Returns the names of the ships that are still afloat.
         """
-        return list(self.ships_position.keys())
+        return [
+            ship_name
+            for ship_name, positions in self.remaining_ship_positions.items()
+            if len(positions) > 0
+        ]
     
     def can_place_ship(self, start_row: int, start_col: int, size: int, direction: str) -> bool:
         """ตรวจสอบว่าสามารถวางเรือได้หรือไม่"""
@@ -167,18 +183,12 @@ class Board:
             location = [(start_row + i, start_col) for i in range(size)]
         
         self.ships_position[ship_name] = location
+        self.remaining_ship_positions[ship_name] = set(location)
         return True
-    
+
     def clear_ships(self):
         """ล้างเรือทั้งหมด"""
-        self.ships_position = {
-            "submarine": [],
-            "patrol_boat": [],
-            "Carrier": [],
-            "Battleship": [],
-            "Cruiser": [],
-            "Destroyer": []
-        }
+        self._initialize_ship_tracking()
     
     def place_ships_custom(self, ship_placements: list) -> dict:
         """

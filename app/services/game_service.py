@@ -62,6 +62,8 @@ class GameService:
             'game_id': game_id,
             'player_board_state': player_board.get_board_state(),
             'ai_board_state': ai_board.get_board_state() if ai_board else None,
+            'player_ships_positions': player_board.ships_position,
+            'ai_ships_positions': ai_board.ships_position if ai_board else None,
             'has_ai': with_ai,
             'ai_difficulty': ai_difficulty if with_ai else None,
             'current_turn': 'player',

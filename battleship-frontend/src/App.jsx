@@ -80,14 +80,13 @@ function App() {
       setGameStatus(data.game_status);
       setCurrentTurn(data.current_turn);
       setMessage(aiEnabled ? 'Game started! Your turn to attack!' : 'Game started! Find all the ships!');
-      
-      // Reset debug boards
-      setPlayerDebugBoard(null);
-      setAiDebugBoard(null);
-      
+
+      setPlayerDebugBoard(data.player_ships_positions || null);
+      setAiDebugBoard(debugMode ? (data.ai_ships_positions || null) : null);
+
       // ปิด Ship Placement modal หลังจากสร้างเกมสำเร็จ
       setShowShipPlacement(false);
-      
+
       // Fetch initial game state for ships remaining
       fetchGameState(data.game_id);
       
@@ -115,14 +114,10 @@ function App() {
       setAiShipsRemaining(data.ai_ships_remaining || []);
       setGameStatus(data.game_status);
       setCurrentTurn(data.current_turn);
-      
-      // ตั้งค่า debug boards ถ้ามีข้อมูล
-      if (data.player_ships_positions) {
-        setPlayerDebugBoard(data.player_ships_positions);
-      }
-      if (data.ai_ships_positions) {
-        setAiDebugBoard(data.ai_ships_positions);
-      }
+
+      // ตั้งค่า debug boards
+      setPlayerDebugBoard(data.player_ships_positions || null);
+      setAiDebugBoard(debugMode ? (data.ai_ships_positions || null) : null);
       
     } catch (error) {
       console.error('Error fetching game state:', error);
