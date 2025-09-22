@@ -14,7 +14,10 @@ dist/
 downloads/
 eggs/
 .eggs/
+# Ignore generated Python libraries but allow checked-in frontend utilities
 lib/
+!battleship-enhanced-features/battleship-enhanced-features/battleship-frontend/src/lib/
+!battleship-enhanced-features/battleship-enhanced-features/battleship-frontend/src/lib/**
 lib64/
 parts/
 sdist/

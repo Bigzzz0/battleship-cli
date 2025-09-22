@@ -3,12 +3,24 @@ from typing import Tuple, List, Set
 
 class AIOpponent:
     """AI Opponent สำหรับเกมเรือรบ"""
-    
-    def __init__(self):
+
+    VALID_DIFFICULTIES = {"easy", "medium", "hard"}
+
+    def __init__(self, difficulty: str = "medium"):
+        if difficulty not in self.VALID_DIFFICULTIES:
+            raise ValueError(
+                f"Invalid AI difficulty '{difficulty}'. Available levels: {sorted(self.VALID_DIFFICULTIES)}"
+            )
+
+        self.difficulty = difficulty
         self.shot_history: Set[Tuple[int, int]] = set()
         self.hit_positions: List[Tuple[int, int]] = []
         self.target_queue: List[Tuple[int, int]] = []
         self.hunting_mode = False
+        self.search_pattern: List[Tuple[int, int]] = []
+
+        if self.difficulty == "hard":
+            self._initialize_search_pattern()
         
     def get_next_shot(self, board_size: int = 10) -> Tuple[int, int]:
         """
@@ -22,8 +34,14 @@ class AIOpponent:
         # หากมี target ใน queue (hunting mode)
         if self.target_queue:
             return self._get_hunting_shot(board_size)
-        
-        # หากไม่มี target ให้ยิงแบบสุ่ม
+
+        if self.difficulty == "easy":
+            return self._get_random_shot(board_size)
+
+        if self.difficulty == "hard":
+            return self._get_strategic_shot(board_size)
+
+        # medium difficulty
         return self._get_random_shot(board_size)
     
     def _get_hunting_shot(self, board_size: int) -> Tuple[int, int]:
@@ -49,6 +67,16 @@ class AIOpponent:
             return (0, 0)
         
         return random.choice(available_positions)
+
+    def _get_strategic_shot(self, board_size: int) -> Tuple[int, int]:
+        """เลือกตำแหน่งโดยใช้ pattern เพื่อลดจำนวนการสุ่ม"""
+        while self.search_pattern:
+            position = self.search_pattern.pop(0)
+            if position not in self.shot_history:
+                return position
+
+        # หาก pattern หมด ให้ยิงแบบสุ่มแทน
+        return self._get_random_shot(board_size)
     
     def update_shot_result(self, position: Tuple[int, int], is_hit: bool, is_sunk: bool = False):
         """
@@ -60,11 +88,11 @@ class AIOpponent:
             is_sunk: เรือจมหรือไม่
         """
         self.shot_history.add(position)
-        
+
         if is_hit:
             self.hit_positions.append(position)
             self.hunting_mode = True
-            
+
             if is_sunk:
                 # หากเรือจม ให้ออกจาก hunting mode
                 self.hunting_mode = False
@@ -72,7 +100,7 @@ class AIOpponent:
             else:
                 # หากเรือยังไม่จม ให้เพิ่มตำแหน่งรอบๆ ใน target queue
                 self._add_adjacent_targets(position)
-        
+
         elif self.hunting_mode and not self.target_queue:
             # หากพลาดและไม่มี target เหลือ ให้ออกจาก hunting mode
             self.hunting_mode = False
@@ -96,4 +124,18 @@ class AIOpponent:
         self.hit_positions.clear()
         self.target_queue.clear()
         self.hunting_mode = False
+        self.search_pattern.clear()
+
+        if self.difficulty == "hard":
+            self._initialize_search_pattern()
+
+    def _initialize_search_pattern(self, board_size: int = 10):
+        pattern: List[Tuple[int, int]] = []
+        for row in range(board_size):
+            for col in range(board_size):
+                if (row + col) % 2 == 0:
+                    pattern.append((row, col))
+
+        random.shuffle(pattern)
+        self.search_pattern = pattern
 
