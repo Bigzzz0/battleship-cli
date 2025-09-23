@@ -5,6 +5,7 @@ import sys
 from io import StringIO
 from unittest.mock import patch, MagicMock
 from BattleShip import BattleShipGame
+from Board import Board
 
 # Mock the Board class
 class MockBoard(Board):
