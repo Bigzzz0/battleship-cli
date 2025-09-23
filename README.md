@@ -22,7 +22,7 @@
 
 ## 🕹️ Demo
 
-![Game Screenshot](https://raw.githubusercontent.com/wiki/Bigzzz0/battleship-cli/screenshots/main_layout.png)
+![Game Screenshot](https://raw.githubusercontent.com/wiki/Bigzzz0/battleship-cli/documents/Untitled_video_-_Made_with_Clipchamp.gif)
 *ภาพตัวอย่างหน้าจอการเล่นเกมเวอร์ชัน Client-Server*
 
 ---
