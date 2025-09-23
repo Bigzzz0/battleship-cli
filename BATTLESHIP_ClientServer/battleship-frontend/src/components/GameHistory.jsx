@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
+import { API_BASE_URL } from '@/config';
 
 const GameHistory = ({ gameId, onClose }) => {
   const [history, setHistory] = useState(null);
   const [statistics, setStatistics] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const API_BASE_URL = 'http://localhost:8000';
 
   useEffect(() => {
     if (gameId) {

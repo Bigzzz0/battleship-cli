@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '@/config';
 
 const AIStats = ({ gameId, hasAI, aiDifficulty }) => {
   const [aiStats, setAiStats] = useState(null);
@@ -9,7 +10,7 @@ const AIStats = ({ gameId, hasAI, aiDifficulty }) => {
 
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:8000/games/${gameId}/ai-stats`);
+      const response = await fetch(`${API_BASE_URL}/games/${gameId}/ai-stats`);
       if (response.ok) {
         const data = await response.json();
         setAiStats(data);
