@@ -1,5 +1,5 @@
 
-# 🚢 Battleship: The Game (Client-Server Edition)
+# 🚢 Battleship: The Game (Client-Server Edition) Test
 
 [![Project Status: Active](https://img.shields.io/badge/status-active-success.svg)](https://github.com/Bigzzz0/battleship-cli)
 [![Language: Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
