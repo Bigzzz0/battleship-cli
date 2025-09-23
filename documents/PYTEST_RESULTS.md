@@ -1,19 +1,19 @@
-# Automated Test Results - Pytest Suite
+# Automated Test Results – Pytest Suite
 
 ## Test Session Overview
-- **Command**: `pytest`
-- **Date Executed**: 2024-12-30 (UTC)
+- **Command**: `cd BATTLESHIP_ClientServer && pytest`
+- **Date Executed**: 2025-09-23 (UTC)
 - **Environment**:
   - Python 3.11.12
   - pytest 8.4.1
   - pluggy 1.6.0
   - anyio 3.7.1 plugin (auto-loaded)
-- **Working Directory**: `/workspace/battleship-cli`
+- **Working Directory**: `/workspace/battleship-cli/BATTLESHIP_ClientServer`
 
 ## Summary
 | Total Tests | Passed | Failed | Skipped | XFailed | XPassed | Duration |
 |-------------|--------|--------|---------|--------|---------|----------|
-| 11          | 11     | 0      | 0       | 0      | 0       | 0.06 s   |
+| 11          | 11     | 0      | 0       | 0      | 0       | 4.09 s   |
 
 ## Module Breakdown
 | Test Module | Test Cases | Status |
@@ -22,10 +22,10 @@
 | `tests/test_game_service.py` | 6 | ✅ Passed |
 
 ## Detailed Notes
-- All board mechanics tests (random placement, shooting validation, sinking detection) executed without failures.
-- Game service scenarios covering AI turn orchestration, history tracking, and validation helpers all passed in 0.06 seconds total.
-- No flaky behavior observed; fixture-driven reset ensures deterministic outcomes between runs.
+- การทดสอบฝั่งกระดานครอบคลุมการวางเรือแบบสุ่ม, ยิงซ้ำ, การจมเรือ, และการวางเรือ custom.
+- การทดสอบ `GameService` ตรวจสอบ flow หลักทั้งหมด: สร้างเกม, ยิงสลับกับ AI, ตรวจสอบเทิร์น, และ validate ตำแหน่งเรือ.
+- ระยะเวลารันทั้งหมด ~4 วินาที โดยไม่มีอาการ flaky หรือ dependency ใดล้มเหลว.
 
 ## Next Steps
-- Schedule regular execution in CI to guard against regressions.
-- Consider expanding coverage with additional integration tests for future features (e.g., AI difficulty toggles, user-configured ship layouts).
+- ผนวกคำสั่ง `pytest` เข้ากับ CI pipeline เพื่อจับ regression อัตโนมัติ.
+- พิจารณาเพิ่ม integration test ระหว่าง FastAPI กับ React (เช่น Playwright) หากต้องการยืนยัน flow เชิง UI.
