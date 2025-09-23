@@ -1,4 +1,4 @@
-from BattleShipGame.BattleShip import BattleShipGame
+from BattleShip import BattleShipGame
 
 Battleship = BattleShipGame()
 Battleship.startGame(Debug=True)
