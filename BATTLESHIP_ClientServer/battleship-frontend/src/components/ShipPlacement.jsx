@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { API_BASE_URL } from '@/config';
 
 const ShipPlacement = ({ onShipsPlaced, onCancel }) => {
   const [ships, setShips] = useState({});
@@ -13,7 +14,7 @@ const ShipPlacement = ({ onShipsPlaced, onCancel }) => {
 
   // ดึงข้อมูลเรือจาก API
   useEffect(() => {
-    fetch('http://localhost:8000/ships')
+    fetch(`${API_BASE_URL}/ships`)
       .then(res => res.json())
       .then(data => {
         setShips(data);
@@ -133,7 +134,7 @@ const ShipPlacement = ({ onShipsPlaced, onCancel }) => {
 
     // ตรวจสอบการวางเรือกับ backend
     try {
-      const response = await fetch('http://localhost:8000/ships/validate', {
+      const response = await fetch(`${API_BASE_URL}/ships/validate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ship_placements: placedShips })
