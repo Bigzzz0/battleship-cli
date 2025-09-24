@@ -1,12 +1,13 @@
-
 # 🚢 Battleship: The Game (Client-Server Edition)
 
 [![Project Status: Active](https://img.shields.io/badge/status-active-success.svg)](https://github.com/Bigzzz0/battleship-cli)
 [![Language: Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Language: React](https://img.shields.io/badge/React-18%2B-61DAFB.svg)](https://react.dev/)
-
+[![Play Game](https://img.shields.io/badge/🎮-Play%20the%20Game-brightgreen.svg)](https://bigzzz0.github.io/battleship-frontend/)
 
 > โปรเจกต์เกม **Battleship** ที่พัฒนาจากเวอร์ชัน Command-Line Interface (CLI) สู่สถาปัตยกรรม **Client-Server** เต็มรูปแบบ ประกอบด้วย **FastAPI Backend** และ **React Frontend** มอบประสบการณ์การเล่นเกมอันน่าตื่นเต้นกับ AI ที่มีความท้าทายถึง 4 ระดับ พร้อมระบบการวางเรือด้วยตนเองและสถิติแบบเรียลไทม์
+
+### 🚀 [**เล่นเกมได้เลยที่นี่!**](https://bigzzz0.github.io/battleship-frontend/) 🚀
 
 🔗 **[เล่นเวอร์ชัน CLI ดั้งเดิมบน Google Colab](https://colab.research.google.com/drive/1h75_nN5lcmN3DCmuBE58Rn5l0spMxP20?usp=sharing)**
 
@@ -22,9 +23,9 @@
 
 ## 🕹️ Demo
 
-![Game Screenshot](documents/Untitled_video_-_Made_with_Clipchamp.gif)
+[![Play Game Screenshot](documents/Untitled_video_-_Made_with_Clipchamp.gif)](https://bigzzz0.github.io/battleship-frontend/)
 
-*ภาพตัวอย่างหน้าจอการเล่นเกมเวอร์ชัน Client-Server*
+*ภาพตัวอย่างหน้าจอการเล่นเกมเวอร์ชัน Client-Server (คลิกที่ภาพเพื่อลองเล่น!)*
 
 ---
 
